@@ -32,6 +32,7 @@ var Challenge = function() {
 	var lastcolor = -1;
 	var countByType = new Array(NUMBER_OF_COLORS+1);
 	var clearable = new Array();
+	var btnback = new Button();
 
 	this.subscribe = function(s) {
 		subscribers.push(s);
@@ -110,7 +111,12 @@ var Challenge = function() {
 				countByType[t]++;
 			}
 		}
+		var fs = Math.floor(_width/28);
 
+		var bh = fs*2;
+		var bw = fs*6;
+
+		btnback.init("<menu", _width - bw, _height - bh*(13/12), bw, bh);
 	};
 
 	this.back = function(evt) {
@@ -139,6 +145,7 @@ var Challenge = function() {
 
 	this.mouseup = function(evt) {
 		if (btndown) window.clearTimeout(btndown);
+		if (btnback.check(evt.clientX, evt.clientY)) notify(0);
 		if (evt.clientY < _height*SCREENRATIO) {
 			if (evt.button == 0) {
 				click(evt.clientX, evt.clientY); //left click
@@ -165,6 +172,7 @@ var Challenge = function() {
 
 	this.touchend = function(evt) {
 		if (btndown) window.clearTimeout(btndown);
+		if (btnback.check(evt.changedTouches[0].pageX, evt.changedTouches[0].pageY)) notify(0);
 		if (evt.changedTouches[0].pageY < _height*SCREENRATIO) {
 			click(evt.changedTouches[0].pageX, evt.changedTouches[0].pageY); //left click
 		}
@@ -480,6 +488,8 @@ var Challenge = function() {
 		if (m < 0) m = 0;
 		var txt = zeroFill(m,2);
 		writeMessage(ctx, txt, WHITE, _width-(fs*6)+fs*(3/2), position+fs, fs);
+
+		btnback.draw(ctx);
 	};
 
 	this.update = function() {
@@ -653,23 +663,6 @@ var Challenge = function() {
 		}
 		//clicks = 0;
 	};
-
-	drawButton = function(ctx, b) {
-		var bb = b.h / 24;
-		ctx.strokeStyle="black";
-		ctx.strokeRect(b.x, b.y, b.w, b.h);
-		ctx.fillStyle="white";
-		ctx.fillRect(b.x, b.y, b.w-bb, b.h-bb); //light box
-		ctx.fillStyle="#3e701e"; //dark green
-		ctx.fillRect(b.x+bb, b.y+bb, b.w-bb, b.h-bb); //shadow box
-		ctx.fillStyle="#6cc236"; //green
-		ctx.fillRect(b.x+bb, b.y+bb, b.w-(bb*2), b.h-(2*bb)); //inner box
-	}
-
-	check_collision = function(b, x, y) {
-		if (x > b.x && x < b.x+b.w && y > b.y && y < b.y+b.h) return true;
-		return false;
-	}
 
 	writeMessage = function(ctx, m, t, x, y, s) {
 		var _m = ""+m;

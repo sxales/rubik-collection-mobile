@@ -89,14 +89,12 @@ var Menu = function() {
 		}
 		var fs = Math.floor(_width/22);
 
-		var bh = fs*3;
+		var bh = fs*2;
 		var bw = fs*16;
 
-		var starth = _height - bh*(15/4);
-
-		btnarcade = { txt: "arcade mode", x: (_width-bw)/2, y: starth, w: bw, h: bh };
-		btnendless = { txt: "endless mode", x: (_width-bw)/2, y: starth + (bh*5/4) , w: bw, h: bh };
-		btnchallenge = { txt: "challenge mode", x: (_width-bw)/2, y: starth + (bh*10/4), w: bw, h: bh };
+		btnarcade.init("arcade mode", (_width-bw)/2, _height - bh*(10/2), bw, bh);
+		btnendless.init("endless mode", (_width-bw)/2, _height - bh*(7/2), bw, bh);
+		btnchallenge.init("challenge mode", (_width-bw)/2, _height - bh*(4/2), bw, bh);
 	};
 
 	this.keydown = function(evt) {
@@ -158,9 +156,9 @@ var Menu = function() {
 
 	click  = function(inputX, inputY) {
 		if (_state == WAITING) {
-			if (check_collision(btnarcade, inputX, inputY)) notify(0);
-			else if (check_collision(btnendless, inputX, inputY)) notify(1);
-			else if (check_collision(btnchallenge, inputX, inputY)) notify(2);
+			if (btnarcade.check(inputX, inputY)) notify(0);
+			else if (btnendless.check(inputX, inputY)) notify(1);
+			else if (btnchallenge.check(inputX, inputY)) notify(2);
 		}
 		else if (_state == INPLAY) {
 		}
@@ -312,35 +310,15 @@ var Menu = function() {
 				var txt = "(3 of 3)";
 				writeMessage(ctx, txt, WHITE, (_width-fs*txt.length)/2, starth + (fs*(14)), fs);
 			}
-			drawButton(ctx, btnarcade);
-			drawButton(ctx, btnendless);
-			drawButton(ctx, btnchallenge);
+			btnarcade.draw(ctx);
+			btnendless.draw(ctx);
+			btnchallenge.draw(ctx);
 		}
 	};
 
 	this.update = function() {
 		if (++_frame > 100) _frame = 0;
 	};
-
-	drawButton = function(ctx, b) {
-		var bb = b.h / 24;
-		ctx.strokeStyle="black";
-		ctx.strokeRect(b.x, b.y, b.w, b.h);
-		ctx.fillStyle="white";
-		ctx.fillRect(b.x, b.y, b.w-bb, b.h-bb); //light box
-		ctx.fillStyle="#3e701e"; //dark green
-		ctx.fillRect(b.x+bb, b.y+bb, b.w-bb, b.h-bb); //shadow box
-		ctx.fillStyle="#6cc236"; //green
-		ctx.fillRect(b.x+bb, b.y+bb, b.w-(bb*2), b.h-(2*bb)); //inner box
-
-		var fs = b.h/3;
-		writeMessage(ctx, b.txt, YELLOW, b.x + (b.w-fs*b.txt.length)/2, b.y + fs, fs);
-	}
-
-	check_collision = function(b, x, y) {
-		if (x > b.x && x < b.x+b.w && y > b.y && y < b.y+b.h) return true;
-		return false;
-	}
 
 	writeMessage = function(ctx, m, t, x, y, s) {
 		var _m = ""+m;

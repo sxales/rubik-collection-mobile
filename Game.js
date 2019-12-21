@@ -80,7 +80,7 @@ var Game = function Game() {
 	};
 
 	changeScene = function(s) {
-		if (MENU) {
+		if (_state == MENU) {
 			if (s == ARCADE) {
 				var a = new Arcade();
 				a.init(_width, _height);
