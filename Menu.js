@@ -92,9 +92,11 @@ var Menu = function() {
 		var bh = fs*2;
 		var bw = fs*16;
 
-		btnarcade.init("arcade mode", (_width-bw)/2, _height - bh*(10/2), bw, bh);
-		btnendless.init("endless mode", (_width-bw)/2, _height - bh*(7/2), bw, bh);
-		btnchallenge.init("challenge mode", (_width-bw)/2, _height - bh*(4/2), bw, bh);
+		var starth = _height*.9/2 + _width*.8/2;
+
+		btnarcade.init("arcade mode", (_width-bw)/2, starth + bh*(0/2), bw, bh);
+		btnendless.init("endless mode", (_width-bw)/2, starth + bh*(3/2), bw, bh);
+		btnchallenge.init("challenge mode", (_width-bw)/2, starth + bh*(6/2), bw, bh);
 	};
 
 	this.keydown = function(evt) {

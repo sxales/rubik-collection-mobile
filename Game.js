@@ -79,24 +79,27 @@ var Game = function Game() {
 				var a = new Arcade();
 				a.init(_width, _height);
 				a.subscribe(changeScene);
-				delete currentScene;
+				var oldScene = currentScene;
 				currentScene = a;
+				delete oldScene;
 				_state = ARCADE;
 			}
 			else if (s == ENDLESS) {
 				var e = new Endless();
 				e.init(_width, _height);
 				e.subscribe(changeScene);
-				delete currentScene;
+				var oldScene = currentScene;
 				currentScene = e;
+				delete oldScene;
 				_state = ENDLESS;
 			}
 			else if (s == CHALLENGE) {
 				var c = new Challenge();
 				c.init(_width, _height);
 				c.subscribe(changeScene);
-				delete currentScene;
+				var oldScene = currentScene;
 				currentScene = c;
+				delete oldScene;
 				_state = CHALLENGE;
 			}
 		}
@@ -104,8 +107,9 @@ var Game = function Game() {
 			var m = new Menu();
 			m.init(_width, _height);
 			m.subscribe(changeScene);
-			delete currentScene;
+			var oldScene = currentScene;
 			currentScene = m;
+			delete oldScene;
 			_state = MENU;
 		}
 	};

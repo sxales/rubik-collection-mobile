@@ -3,7 +3,7 @@ var Challenge = function() {
 	var _w, _h;//in tiles
 	var _frame = 0;//counter 0-100
 	var _state;
-	var WAITING = -1, INPLAY = 0, PAUSED = 1, GAMEOVER = 2, SUCCESS = 3;//states
+	var WAITING = -1, INPLAY = 0, PAUSED = 1, GAMEOVER = 2;//states
 	var TOOMANYCLICKS = 25;
 	var NUMBER_OF_COLORS = 5;
 	var BLUE = 5, GRAY = 8, GREEN = 4, RED = 3, SUPER = 2, WHITE = 1, TEAL = 5, YELLOW = 6, PINK = 7, LOGO = 0; //font colors
@@ -30,9 +30,10 @@ var Challenge = function() {
 	var highscore = 0;
 	var levelchanged = false;
 	var lastcolor = -1;
-	var countByType = new Array(NUMBER_OF_COLORS+1);
+	//var countByType = new Array(NUMBER_OF_COLORS+1);
 	var clearable = new Array();
 	var btnback = new Button();
+	var CHALLENGESCORE = 250000;
 
 	this.subscribe = function(s) {
 		subscribers.push(s);
@@ -78,7 +79,7 @@ var Challenge = function() {
 		levelscore = 0;
 		levelchanged = false;
 		lastcolor = -1;
-		for (var i=0; i<NUMBER_OF_COLORS+1; i++) countByType[i] = 0;
+		//for (var i=0; i<NUMBER_OF_COLORS+1; i++) countByType[i] = 0;
 
 		var w = Math.floor(_width/_w);
 		var h = Math.floor(_height*SCREENRATIO/_h);
@@ -108,7 +109,7 @@ var Challenge = function() {
 				var tile = new Tile();
 				tile = {type: t, x: i, y: j, isMoving: false, isAnimating: false };
 				model.set(i,j, tile);
-				countByType[t]++;
+				//countByType[t]++;
 			}
 		}
 		var fs = Math.floor(_width/28);
@@ -122,9 +123,6 @@ var Challenge = function() {
 	this.keydown = function(evt) {
 		if (evt.key == "m") {
 			mute = !mute;
-		}
-		else if (evt.key == "s") {
-			_state = GAMEOVER;
 		}
 		else if (evt.key == "d") {
 			debug = !debug;
@@ -194,7 +192,7 @@ var Challenge = function() {
 			var transX = Math.round(inputX/w);
 			var transY = Math.round(inputY/h);
 			if (transX >= 0 && transX < _w && transY >= 0 && transY < _h) {
-				rotate(transX, transY);
+				if (clicks < TOOMANYCLICKS) rotate(transX, transY);
 			}
 		}
 	};
@@ -396,55 +394,23 @@ var Challenge = function() {
 			}
 			var starth = _height*.9/2 - h/2;
 
-			var txt = "Game over";
-			var fs = _width / (txt.length+6);
-			writeMessage(ctx, txt, RED, (_width-fs*txt.length)/2, starth + (fs*(1/2)), fs);
 
-			var fs = Math.floor(w/20);
-
-			var txt = "highscore";
-			writeMessage(ctx, txt, LOGO, (_width-fs*txt.length)/2, starth + (fs*(7)), fs);
-
-			var txt = zeroFill(highscore, 5);
-			writeMessage(ctx, txt, WHITE, (_width-fs*txt.length)/2, starth + (fs*(17/2)), fs);
-
-			var txt = "maybe next time,";
-			writeMessage(ctx, txt, WHITE, (_width-fs*txt.length)/2, starth + (fs*(13)), fs);
-			var txt = "try again?";
-			writeMessage(ctx, txt, WHITE, (_width-fs*txt.length)/2, starth + (fs*(14)), fs);
-
-			if (_frame > 30) {
-				save();
-				_state = WAITING;
-				_frame = 0;
-				reset();
-			}
-		}
-		else if (_state == SUCCESS) {
-			var w = _width*.9;
-			var h = w * .8
-			var margin = _width*.05;
-			ctx.drawImage(resourceRepository.box, margin, _height*.9/2 - h/2, w, h);
-			ctx.drawImage(resourceRepository.logo, margin, _height*.9/2 - h/2 - w*.29, w, w*.19);
-
-			var txt = "challenge mode";
-			var fs = Math.floor(w/(txt.length+2));
-			writeMessage(ctx, txt, LOGO, (_width-fs*txt.length)/2, _height*.9/2 - h/2 - w*.29 + (w*.19 - fs)/2, fs);
-
-			var fs = Math.floor((_width*.9)/16);
-			if (typeof(Storage) !== "undefined") {
-				txt = "saving...";
-				if (Math.round(_frame/5)% 2 == 1) writeMessage(ctx, txt, WHITE, _width-(fs*(txt.length)), _height*SCREENRATIO-fs*(3/2), fs);
+			if (score > CHALLENGESCORE) {
+				var txt = "Challenge passed";
+				var fs = _width / (txt.length+4);
+				writeMessage(ctx, txt, SUPER, (_width-fs*txt.length)/2, starth + (fs*(1/2)), fs);
+				var fs = Math.floor(w/20);
+				var txt = "congratulations!";
+				writeMessage(ctx, txt, WHITE, (_width-fs*txt.length)/2, starth + (fs*(13)), fs);
 			}
 			else {
-				txt = "saving failed";
-				writeMessage(ctx, txt, RED, _width-(fs*(txt.length)), _height*SCREENRATIO-fs*(3/2), fs);
+				var txt = "Game over";
+				var fs = _width / (txt.length+6);
+				writeMessage(ctx, txt, RED, (_width-fs*txt.length)/2, starth + (fs*(1/2)), fs);
+				var fs = Math.floor(w/20);
+				var txt = "maybe next time,";
+				writeMessage(ctx, txt, WHITE, (_width-fs*txt.length)/2, starth + (fs*(13)), fs);
 			}
-			var starth = _height*.9/2 - h/2;
-
-			var txt = "Challenge passed";
-			var fs = _width / (txt.length+4);
-			writeMessage(ctx, txt, SUPER, (_width-fs*txt.length)/2, starth + (fs*(1/2)), fs);
 
 			var fs = Math.floor(w/20);
 
@@ -454,8 +420,6 @@ var Challenge = function() {
 			var txt = zeroFill(highscore, 5);
 			writeMessage(ctx, txt, WHITE, (_width-fs*txt.length)/2, starth + (fs*(17/2)), fs);
 
-			var txt = "congratulations,";
-			writeMessage(ctx, txt, WHITE, (_width-fs*txt.length)/2, starth + (fs*(13)), fs);
 			var txt = "try again?";
 			writeMessage(ctx, txt, WHITE, (_width-fs*txt.length)/2, starth + (fs*(14)), fs);
 
@@ -513,15 +477,11 @@ var Challenge = function() {
 	};
 
 	check = function() {
-		if (score >= 250000) {
-			_state = SUCCESS;
-			_frame = 0;
-			if (!mute) resourceRepository.leveup.play();
-		}
-		else if (clicks >= TOOMANYCLICKS) {
+		if (clicks >= TOOMANYCLICKS) {
 			_state = GAMEOVER;
 			_frame = 0;
-			if (!mute) resourceRepository.gameover.play();
+			if (score >= CHALLENGESCORE && !mute) resourceRepository.leveup.play();
+			else if (!mute) resourceRepository.gameover.play();
 		}
 	};
 
@@ -639,7 +599,7 @@ var Challenge = function() {
 	};
 
 	clear = function(x, y) {
-		if (model.get(x,y).type > 0) countByType[model.get(x,y).type]--;
+		//if (model.get(x,y).type > 0) countByType[model.get(x,y).type]--;
 		var tile = new Tile();
 		tile = {type: -1, x: Math.floor(x), y: -1, isMoving: false, isAnimating: false };
 		model.set(Math.floor(x), Math.floor(y), tile);
