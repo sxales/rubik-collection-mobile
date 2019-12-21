@@ -118,10 +118,6 @@ var Endless = function() {
 		btnback.init("<menu", _width - bw, _height - bh*(13/12), bw, bh);
 	};
 
-	this.back = function(evt) {
-		notify(0);
-	};
-
 	this.keydown = function(evt) {
 		if (evt.key == "m") {
 			mute = !mute;

@@ -131,10 +131,6 @@ var Arcade = function() {
 		}
 	};
 
-	this.back = function(evt) {
-		notify(0);
-	};
-
 	this.keydown = function(evt) {
 		if (evt.key == "m") {
 			mute = !mute;

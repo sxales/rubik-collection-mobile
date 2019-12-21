@@ -46,12 +46,6 @@ var Game = function Game() {
 			evt.preventDefault();
 			currentScene.touchmove(evt);
 		}, false);
-		document.addEventListener("deviceready", function(evt) {
-			document.addEventListener("backbutton", function(evt) {
-				evt.preventDefault();
-				currentScene.back(evt);
-			}, false);
-		}, false);
 		this.spriteCanvas.addEventListener("contextmenu", function(evt) { evt.preventDefault(); }, false);
 
 		if (this.spriteCanvas.getContext) {
