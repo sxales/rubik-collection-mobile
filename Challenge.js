@@ -481,7 +481,7 @@ var Challenge = function() {
 		if (clicks >= TOOMANYCLICKS) {
 			_state = GAMEOVER;
 			_frame = 0;
-			if (score >= CHALLENGESCORE && !mute) resourceRepository.leveup.play();
+			if (score >= CHALLENGESCORE && !mute) resourceRepository.levelup.play();
 			else if (!mute) resourceRepository.gameover.play();
 		}
 	};
