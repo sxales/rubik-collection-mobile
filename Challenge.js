@@ -441,6 +441,7 @@ var Challenge = function() {
 		writeMessage(ctx, "score", RED, margin, position, fs);
 		if (score > displayedscore) displayedscore += 50;
 		var txt = zeroFill(displayedscore, 5);
+		if (_state == GAMEOVER) txt = zeroFill(score, 5);
 		writeMessage(ctx, txt, WHITE, margin, position+fs, fs);
 
 		writeMessage(ctx, "moves", RED, _width-(fs*6), position, fs);

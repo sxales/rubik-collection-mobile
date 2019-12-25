@@ -433,6 +433,7 @@ var Arcade = function() {
 		writeMessage(ctx, "score", RED, margin, position, fs);
 		if (score > displayedscore) displayedscore += 25;
 		var txt = zeroFill(displayedscore, 6);
+		if (_state == GAMEOVER) txt = zeroFill(score, 6);
 		writeMessage(ctx, txt, WHITE, margin-(fs/2), position+fs, fs);
 
 		writeMessage(ctx, "level", RED, margin+(fs*6), position, fs);

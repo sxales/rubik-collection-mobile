@@ -451,8 +451,9 @@ var Endless = function() {
 		var position = _height*SCREENRATIO + fs;
 
 		writeMessage(ctx, "score", RED, margin, position, fs);
-		if (score > displayedscore) displayedscore += 5;
+		if (score > displayedscore) displayedscore += 25;
 		var txt = zeroFill(displayedscore, 5);
+		if (_state == GAMEOVER) txt = zeroFill(score, 5);
 		writeMessage(ctx, txt, WHITE, margin, position+fs, fs);
 
 		writeMessage(ctx, "level", RED, margin+(fs*6), position, fs);
