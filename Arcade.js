@@ -167,6 +167,7 @@ var Arcade = function() {
 		if (evt.clientY < _height*SCREENRATIO) {
 			cursor.update(evt);
 		}
+		btnback.check(evt.clientX, evt.clientY);
 	};
 
 	this.touchstart = function(evt) {
@@ -332,8 +333,10 @@ var Arcade = function() {
 			var w = _width*.9;
 			var h = w * .8
 			var margin = _width*.05;
-			ctx.drawImage(resourceRepository.box, margin, _height*.9/2 - h/2, w, h);
-			ctx.drawImage(resourceRepository.logo, margin, _height*.9/2 - h/2 - w*.29, w, w*.19);
+			//ctx.drawImage(resourceRepository.box, margin, _height*.9/2 - h/2, w, h);
+			//ctx.drawImage(resourceRepository.logo, margin, _height*.9/2 - h/2 - w*.29, w, w*.19);
+			drawBox(ctx, 20, margin, _height*.9/2 - h/2, w, h);
+			drawBox(ctx, 20, margin, _height*.9/2 - h/2 - w*.29, w, w*.19);
 
 			var txt = "rubik";
 			var fs = Math.floor(w/(txt.length+6));
@@ -374,8 +377,10 @@ var Arcade = function() {
 			var w = _width*.9;
 			var h = w * .8
 			var margin = _width*.05;
-			ctx.drawImage(resourceRepository.box, margin, _height*.9/2 - h/2, w, h);
-			ctx.drawImage(resourceRepository.logo, margin, _height*.9/2 - h/2 - w*.29, w, w*.19);
+			//ctx.drawImage(resourceRepository.box, margin, _height*.9/2 - h/2, w, h);
+			//ctx.drawImage(resourceRepository.logo, margin, _height*.9/2 - h/2 - w*.29, w, w*.19);
+			drawBox(ctx, 20, margin, _height*.9/2 - h/2, w, h);
+			drawBox(ctx, 20, margin, _height*.9/2 - h/2 - w*.29, w, w*.19);
 
 			var txt = "rubik";
 			var fs = Math.floor(w/(txt.length+6));
@@ -424,11 +429,12 @@ var Arcade = function() {
 		}
 
 		//draw scoreboard
-		ctx.drawImage(resourceRepository.background, 0, _height*SCREENRATIO, _width, _height*(1-SCREENRATIO));
+		//ctx.drawImage(resourceRepository.background, 0, _height*SCREENRATIO, _width, _height*(1-SCREENRATIO));
+		drawBox(ctx, 9, 0, _height*SCREENRATIO, _width, _height*(1-SCREENRATIO));
 
-		var fs = _width/25;
-		var margin = fs*(7/4);
-		var position = _height*SCREENRATIO + fs*2;
+		var fs = _height*(1-SCREENRATIO)/5;
+		var margin = (_width-(fs*14))/2;
+		var position = _height*SCREENRATIO + fs/2;
 
 		writeMessage(ctx, "score", RED, margin, position, fs);
 		if (score > displayedscore) displayedscore += 25;
@@ -436,19 +442,19 @@ var Arcade = function() {
 		if (_state == GAMEOVER) txt = zeroFill(score, 6);
 		writeMessage(ctx, txt, WHITE, margin-(fs/2), position+fs, fs);
 
-		writeMessage(ctx, "level", RED, margin+(fs*6), position, fs);
-		var txt = zeroFill(level+1, 5);
-		writeMessage(ctx, txt, WHITE, margin+(fs*6), position+fs, fs);
+		writeMessage(ctx, "time", RED, margin+(fs/2), position+(fs*2), fs);
+		var txt = zeroFill(time, 3);
+		writeMessage(ctx, txt, WHITE, margin+(fs), position+(fs*3), fs);
 
-		writeMessage(ctx, "lines", RED, margin+(fs*12), position, fs);
+		writeMessage(ctx, "lines", RED, margin+(fs*8), position, fs);
 		var lines = linestoclear - levellines;
 		if (lines < 0) lines = 0;
-		var txt = zeroFill(lines, 5);
-		writeMessage(ctx, txt, WHITE, margin+(fs*12), position+fs, fs);
+		var txt = zeroFill(lines, 3);
+		writeMessage(ctx, txt, WHITE, margin+(fs*8)+(fs), position+fs, fs);
 
-		writeMessage(ctx, "time", RED, margin+(fs*18), position, fs);
-		var txt = zeroFill(time, 4);
-		writeMessage(ctx, txt, WHITE, margin+(fs*18), position+fs, fs);
+		writeMessage(ctx, "level", RED, margin+(fs*8), position+(fs*2), fs);
+		var txt = zeroFill(level+1, 3);
+		writeMessage(ctx, txt, WHITE, margin+(fs*8)+fs, position+(fs*3), fs);
 
 		btnback.draw(ctx);
 	};
@@ -628,25 +634,6 @@ var Arcade = function() {
 		if (level > highlevel) {
 			highlevel = level;
 		}
-	};
-
-	writeMessage = function(ctx, m, t, x, y, s) {
-		var _m = ""+m;
-		var _m = _m.toLowerCase();
-		if (x+ _m.length*s > _width) x = _width-_m.length*s;
-		else if (x < 0) x=0;
-		for(var i=0; i<_m.length; i++) {
-			if (_m.charCodeAt(i) <= 126 && _m.charCodeAt(i) >= 32) ctx.drawImage(resourceRepository.font, FONTSIZE*(_m.charCodeAt(i)-32)+1, FONTSIZE*t+1, FONTSIZE-2, FONTSIZE-2, x+(i*s),y,s,s);
-			else ctx.drawImage(resourceRepository.font, FONTSIZE*(41 /*question mark*/)+1, FONTSIZE*t+1, FONTSIZE, FONTSIZE, x+(i*s),y,s,s);
-		}
-	};
-
-	zeroFill = function(n,p) {
-		var s = ""+n;
-		while (s.length<p) {
-			s = "0"+s;
-		}
-		return s;
 	};
 
 	setVolume = function(v) {

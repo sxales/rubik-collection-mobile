@@ -131,6 +131,9 @@ var Menu = function() {
 		if (evt.clientY < _height*SCREENRATIO) {
 			cursor.update(evt);
 		}
+		btnarcade.check(evt.clientX, evt.clientY);
+		btnendless.check(evt.clientX, evt.clientY);
+		btnchallenge.check(evt.clientX, evt.clientY);
 	};
 
 	this.touchstart = function(evt) {
@@ -225,8 +228,10 @@ var Menu = function() {
 			var w = _width*.9;
 			var h = w * .8
 			var margin = _width*.05;
-			ctx.drawImage(resourceRepository.box, margin, _height*.9/2 - h/2, w, h);
-			ctx.drawImage(resourceRepository.logo, margin, _height*.9/2 - h/2 - w*.29, w, w*.19);
+			//ctx.drawImage(resourceRepository.box, margin, _height*.9/2 - h/2, w, h);
+			//ctx.drawImage(resourceRepository.logo, margin, _height*.9/2 - h/2 - w*.29, w, w*.19);
+			drawBox(ctx, 20, margin, _height*.9/2 - h/2, w, h);
+			drawBox(ctx, 20, margin, _height*.9/2 - h/2 - w*.29, w, w*.19);
 
 			var txt = "rubik";
 			var fs = Math.floor(w/(txt.length+6));
@@ -331,6 +336,20 @@ var Menu = function() {
 			if (_m.charCodeAt(i) <= 126 && _m.charCodeAt(i) >= 32) ctx.drawImage(resourceRepository.font, FONTSIZE*(_m.charCodeAt(i)-32)+1, FONTSIZE*t+1, FONTSIZE-2, FONTSIZE-2, x+(i*s),y,s,s);
 			else ctx.drawImage(resourceRepository.font, FONTSIZE*(41 /*question mark*/)+1, FONTSIZE*t+1, FONTSIZE, FONTSIZE, x+(i*s),y,s,s);
 		}
+	};
+
+	drawBox = function(ctx, c, x, y, w, h) {
+		ctx.drawImage(resourceRepository.tileSheet, 64*(c%8), 64*Math.floor(c/8), 16, 16, x, y, 16, 16);//top left corner
+		ctx.drawImage(resourceRepository.tileSheet, 64*(c%8), 64*Math.floor(c/8)+48, 16, 16, x, (y+h)-16, 16, 16);//bottom left corner
+		ctx.drawImage(resourceRepository.tileSheet, 64*(c%8)+48, 64*Math.floor(c/8), 16, 16, (x+w)-16, y, 16, 16);//top right corner
+		ctx.drawImage(resourceRepository.tileSheet, 64*(c%8)+48, 64*Math.floor(c/8)+48, 16, 16, (x+w)-16, (y+h)-16, 16, 16);//bottom right corner
+
+		ctx.drawImage(resourceRepository.tileSheet, 64*(c%8)+16, 64*Math.floor(c/8), 16, 16, x+15, y, w-30, 16);//top
+		ctx.drawImage(resourceRepository.tileSheet, 64*(c%8)+16, 64*Math.floor(c/8)+48, 16, 16, x+15, (y+h)-16, w-30, 16);//bottom
+		ctx.drawImage(resourceRepository.tileSheet, 64*(c%8), 64*Math.floor(c/8)+16, 16, 16, x, y+16, 16, h-30);//left
+		ctx.drawImage(resourceRepository.tileSheet, 64*(c%8)+48, 64*Math.floor(c/8)+16, 16, 16, (x+w)-16, y+15, 16, h-30);//right
+
+		ctx.drawImage(resourceRepository.tileSheet, 64*(c%8)+16, 64*Math.floor(c/8)+16, 16, 16, x+14, y+15, w-28, h-30);//fill
 	};
 
 	zeroFill = function(n,p) {

@@ -1,8 +1,5 @@
 var resourceRepository = new function() {
 	// Define images
-	this.background = new Image();
-	this.logo = new Image();
-	this.box = new Image();
 	this.tileSheet = new Image();
 	this.font = new Image();
 
@@ -15,7 +12,7 @@ var resourceRepository = new function() {
 	this.schwing = new Audio();
 
 	// Ensure all images have loaded before starting the game
-	var numImages = 12;
+	var numImages = 9;
 	var numLoaded = 0;
 	function imageLoaded() {
 		numLoaded++;
@@ -45,28 +42,16 @@ var resourceRepository = new function() {
 	this.schwing.oncanplay = function() {
 		imageLoaded();
 	}
-	this.background.onload = function() {
-		imageLoaded();
-	}
 	this.tileSheet.onload = function() {
 		imageLoaded();
 	}
 	this.font.onload = function() {
 		imageLoaded();
 	}
-	this.logo.onload = function() {
-		imageLoaded();
-	}
-	this.box.onload = function() {
-		imageLoaded();
-	}
 
  	// Set images src
-	this.background.src = "images/background.png";
-	this.logo.src = "images/logo.png";
 	this.tileSheet.src = "images/tiles.png";
 	this.font.src = "images/font.png";
-	this.box.src = "images/box.png";
 
 	this.gameover.src = "sounds/gameover.wav";
 	this.levelup.src = "sounds/levelup.wav";

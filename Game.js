@@ -53,14 +53,14 @@ var Game = function Game() {
 			this.spriteContext = this.spriteCanvas.getContext('2d');
 
 			_height = window.innerHeight;
-			_width = window.innerWidth;
-			//_width = _height*10/16;
+			//_width = window.innerWidth;
+			_width = _height*10/16;
 
 
 			this.spriteCanvas.width = _width;
 			this.spriteCanvas.height = _height;
 
-			this.spriteContext.drawImage(resourceRepository.background, 0, _height*SCREENRATIO, _width, _height*(1-SCREENRATIO));
+			//this.spriteContext.drawImage(resourceRepository.background, 0, _height*SCREENRATIO, _width, _height*(1-SCREENRATIO));
 
 			_state = MENU;
 			var m = new Menu();
