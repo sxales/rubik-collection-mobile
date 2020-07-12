@@ -453,22 +453,22 @@ var Endless = function() {
 		drawBox(ctx, 9, 0, _height*SCREENRATIO, _width, _height*(1-SCREENRATIO));
 
 		var fs = _height*(1-SCREENRATIO)/5;
-		var margin = (_width-(fs*17))/2;
-		var position = _height*SCREENRATIO + fs*3/2;
+		var margin = (_width-(fs*13))/2;
+		var position = _height*SCREENRATIO + (fs/2);
 
 		writeMessage(ctx, "score", RED, margin, position, fs);
-		if (score > displayedscore) displayedscore += 25;
+		if (score > displayedscore) displayedscore += 50;
 		var txt = zeroFill(displayedscore, 6);
 		if (_state == GAMEOVER) txt = zeroFill(score, 6);
 		writeMessage(ctx, txt, WHITE, margin-(fs/2), position+fs, fs);
 
-		writeMessage(ctx, "level", RED, margin+(fs*6), position, fs);
+		writeMessage(ctx, "level", RED, margin, position+(fs*2), fs);
 		var txt = zeroFill(level+1, 3);
-		writeMessage(ctx, txt, WHITE, margin+(fs*6)+fs, position+fs, fs);
+		writeMessage(ctx, txt, WHITE, margin+fs, position+(fs*3), fs);
 
-		writeMessage(ctx, "moves", RED, margin+(fs*12), position, fs);
+		writeMessage(ctx, "moves", RED, margin+(fs*8), position+fs, fs);
 		var txt = TOOMANYCLICKS-clicks
-		writeMessage(ctx, txt, WHITE, margin+(fs*12)+fs*(2), position+fs, fs);
+		writeMessage(ctx, txt, WHITE, margin+(fs*8)+fs*(2), position+(fs*2), fs);
 
 		btnback.draw(ctx);
 	};

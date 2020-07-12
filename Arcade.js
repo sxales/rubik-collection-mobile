@@ -433,7 +433,7 @@ var Arcade = function() {
 		drawBox(ctx, 9, 0, _height*SCREENRATIO, _width, _height*(1-SCREENRATIO));
 
 		var fs = _height*(1-SCREENRATIO)/5;
-		var margin = (_width-(fs*14))/2;
+		var margin = (_width-(fs*13))/2;
 		var position = _height*SCREENRATIO + fs/2;
 
 		writeMessage(ctx, "score", RED, margin, position, fs);
